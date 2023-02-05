@@ -3,8 +3,95 @@
 ## UK RAW TRAFFIC CSV DATA SET => SSMS DATABASE WITH ETL SSIS
 ## AUTHOR  JUDE OKAGU  https://roadtraffic.dft.gov.uk/downloads  Raw count data - major and minor roads
 
+## ------------SCHEMA CHECK-----------------------------------------
+```
+GO 
+IF NOT EXISTS (SELECT [SCHEMA_NAME]
+			FROM UK_Traffic.INFORMATION_SCHEMA.SCHEMATA
+			WHERE [SCHEMA_NAME] = 'err'
+)
+exec('CREATE SCHEMA err')
+;
 
+GO
 
+IF NOT EXISTS (SELECT [SCHEMA_NAME]
+			FROM UK_Traffic.INFORMATION_SCHEMA.SCHEMATA
+			WHERE [SCHEMA_NAME] = 'dim'
+)
+exec('CREATE SCHEMA dim')
+;
+GO
+IF NOT EXISTS (SELECT [SCHEMA_NAME]
+			FROM UK_Traffic.INFORMATION_SCHEMA.SCHEMATA
+			WHERE [SCHEMA_NAME] = 'dim'
+)
+exec('CREATE SCHEMA dim')
+;
+GO
+IF NOT EXISTS (SELECT [SCHEMA_NAME]
+			FROM UK_Traffic.INFORMATION_SCHEMA.SCHEMATA
+			WHERE [SCHEMA_NAME] = 'f'
+)
+exec('CREATE SCHEMA f')
+;
+GO
+```
+
+### -------------------------- TRUNCATE STG TABLE ------------------------
+```
+GO
+
+IF NOT EXISTS (SELECT TABLE_NAME
+				FROM UK_Traffic.INFORMATION_SCHEMA.TABLES
+			WHERE TABLE_TYPE ='BASE TABLE' and 
+                TABLE_NAME ='traffic'
+)
+
+exec('CREATE TABLE [stg traffic] (
+    [Count_point_id] varchar(255),
+    [Direction_of_travel] varchar(255),
+    [Year] varchar(255),
+    [Count_date] varchar(255),
+    [hour] varchar(255),
+    [Region_id] varchar(255),
+    [Region_name] varchar(255),
+    [Region_ons_code] varchar(255),
+    [Local_authority_id] varchar(255),
+    [Local_authority_name] varchar(255),
+    [Local_authority_code] varchar(255),
+    [Road_name] varchar(255),
+    [Road_category] varchar(255),
+    [Road_type] varchar(255),
+    [Start_junction_road_name] varchar(255),
+    [End_junction_road_name] varchar(255),
+    [Easting] varchar(255),
+    [Northing] varchar(255),
+    [Latitude] varchar(255),
+    [Longitude] varchar(255),
+    [Link_length_km] varchar(255),
+    [Link_length_miles] varchar(255),
+    [Pedal_cycles] varchar(255),
+    [Two_wheeled_motor_vehicles] varchar(255),
+    [Cars_and_taxis] varchar(255),
+    [Buses_and_coaches] varchar(255),
+    [LGVs] varchar(255),
+    [HGVs_2_rigid_axle] varchar(255),
+    [HGVs_3_rigid_axle] varchar(255),
+    [HGVs_4_or_more_rigid_axle] varchar(255),
+    [HGVs_3_or_4_articulated_axle] varchar(255),
+    [HGVs_5_articulated_axle] varchar(255),
+    [HGVs_6_articulated_axle] varchar(255),
+    [All_HGVs] varchar(255),
+    [All_motor_vehicles] varchar(255)'
+)
+
+GO
+
+TRUNCATE TABLE stg.traffic
+GO
+
+```
 
 
 ### ------------------------------DIM DDLROAD CATEGORY------------------------------------4
