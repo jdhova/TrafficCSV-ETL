@@ -1,9 +1,28 @@
 
 
-## UK RAW TRAFFIC CSV DATA SET => SSMS DATABASE WITH ETL SSIS
-## AUTHOR  JUDE OKAGU  https://roadtraffic.dft.gov.uk/downloads  Raw count data - major and minor roads
+## Introduction and Overview
 
-## ------------SCHEMA CHECK-----------------------------------------
+
+***
+
+ This project is aimed at tranforming UK Raw Traffic CSV Data set  to SSMS database With ETL SSIS
+
+### Author Jude OKAGU 
+
+### Data :
+
+  [Data](https://roadtraffic.dft.gov.uk/downloads)
+[Original-Project-Link](https://maps.dft.gov.uk/road-casualties/index.html)
+
+  
+
+
+### Tools and Language: 
+	Power BI , SSMS , SSIS, SQL
+
+
+
+ ### ------------ Schema Check-----------------------------------------
 ```
 GO 
 IF NOT EXISTS (SELECT [SCHEMA_NAME]
@@ -38,7 +57,8 @@ exec('CREATE SCHEMA f')
 GO
 ```
 
-### -------------------------- TRUNCATE STG TABLE ------------------------
+### -------------------------- Truncate Stg Table ------------------------
+
 ```
 GO
 
@@ -84,7 +104,7 @@ exec('CREATE TABLE [stg traffic] (
     [HGVs_6_articulated_axle] varchar(255),
     [All_HGVs] varchar(255),
     [All_motor_vehicles] varchar(255)'
-)
+))
 
 GO
 
@@ -94,7 +114,7 @@ GO
 ```
 
 
-### ------------------------------DIM DDLROAD CATEGORY------------------------------------4
+### ------------------------------Dim DDL Road-Category------------------------------------
 
 ```
 GO
@@ -134,7 +154,7 @@ GO
 
 
 ```
-### --------------------------------road CATEGORY CODE-------------------------------------
+### --------------------------------Road Category Code-------------------------------------
 
 ```
 Select distinct (case
@@ -166,7 +186,8 @@ Order by 1
 
 
 ```
-### ------------------------------DIM DDL region STARTS HERE------------------------------------
+
+### ------------------------------Dim DDL region Starts HERE------------------------------------
 
 
 ```
@@ -213,7 +234,8 @@ GO
 
 
 ```
-### -------------------------------------Region Code here-----------------------------------------------------
+### -------------------------------------Region Code here---------------------------------------
+
 
 
 ```
@@ -234,7 +256,8 @@ Local_authority_id as Key_Local_authority_id
 
 
 ```
-### -----------------------------------DIM DDL Direction STARTS here-------------------------------------------------------
+### -----------------------------------DIM DDL Direction Starts here----------------------------
+
 
 
 ```
@@ -270,7 +293,8 @@ GO
 
 
 ```
-### -----------------------------------CODE Direction STARTS here-------------------------------------------------------
+### -----------------------------------CODE Direction starts here-------------------------------
+
 
 
 ```
@@ -300,7 +324,8 @@ ORDER BY 1
 
 
 ```
-### -----------------------------DIM DDL Hour of day Starts HERE------------------------------------------------------------
+### -----------------------------DIM DDL Hour of day Starts here--------------------------------
+
 
 
 ```
@@ -340,7 +365,8 @@ GO
 
 
 ```
-### ----------------------------------------CODE Hour of Day Starts HERE---------------------------------------------------
+### ----------------------------------------CODE Hour of Day Starts HERE------------------------
+
 
 
 ```
@@ -385,7 +411,8 @@ ROW_NUMBER() OVER(ORDER BY [hour]) + 100 as 'Key_hourOfDay'
 
 
 ```
-  ### ---------------------------Calendar------------------------------------------------------------------
+  ### ---------------------------Calendar---------------------------------------------------------
+
   
 ```
   IF NOT EXISTS (SELECT TABLE_NAME 
@@ -456,7 +483,8 @@ OPTION (MAXRECURSION 0);
 
 
 ```
-### ---------------------------------------------------------------fact DDL 255 CORRECT--------------------------------------------------------------------------------------
+### ------------------------------fact DDL 255 CORRECT------------------------------------------
+
 
 
 ```
@@ -493,41 +521,10 @@ IF NOT EXISTS (SELECT *
 
 
 ```
-### ---------------------------------------------------------------fact table DDL less than 255 here wrong----------------------------------------------------------------------------
 
 
-```
-IF NOT EXISTS (SELECT TABLE_NAME 
-      FROM UK_Traffic.INFORMATION_SCHEMA.TABLES 
-            WHERE TABLE_TYPE = 'BASE TABLE' and TABLE_NAME = 'traffic'
-) exec('CREATE TABLE [f].[traffic] (
-    [Count_point_id] bigint,
-    [kDate] int,
-    [k_Direction_of_Travel] smallint,
-    [k_Hour] bigint,
-    [k_Local_Authority_ID] bigint,
-    [k_Road_Category] bigint,
-    [Latitude] varchar(50),
-    [Longitude] varchar(50),
-    [Pedal_cycles] bigint,
-    [Two_wheeled_motor_vehicles] bigint,
-    [Cars_and_taxis] bigint,
-    [Buses_and_coaches] bigint,
-    [LGVs] bigint,
-    [HGVs_2_rigid_axle] bigint,
-    [HGVs_3_rigid_axle] bigint,
-    [HGVs_4_or_more_rigid_axle] bigint,
-    [HGVs_3_or_4_articulated_axle] bigint,
-    [HGVs_5_articulated_axle] bigint,
-    [HGVs_6_articulated_axle] bigint
-)'
-);
+### -----------------------------------fact table code here-------------------------------------
 
-Truncate Table [f].[traffic]
-
-```
-
-### -----------------------------------fact table code here----------------------------------------------------------------------------------------
 
 ```
 SELECT [Count_point_id]
@@ -563,7 +560,8 @@ FROM [UK_Traffic].[stg].[traffic] tra
 
 ```
 
-### -------------------------------------------- DROP FK KEYS---------------------------------------------------------------------------------------------------------------------
+### ----------------------------- DROP FK KEYS--------------------------------------------------
+
 
 
 
@@ -586,7 +584,8 @@ DROP CONSTRAINT if exists fk_roadcategory
 GO
 
 ```
-### ---------------------------ADD FK KEYS-------------------------------------
+### -----------------------------------ADD FK KEYS----------------------------------------------
+
 
 
 ```
