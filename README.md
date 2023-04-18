@@ -12,13 +12,13 @@
 ### Data :
 
   [Data](https://roadtraffic.dft.gov.uk/downloads)
-[Original-Project-Link](https://maps.dft.gov.uk/road-casualties/index.html)
+
 
   
 
 
 ### Tools and Language: 
-	Power BI , SSMS , SSIS, SQL
+	SSMS , SSIS, SQL
 
 
 
